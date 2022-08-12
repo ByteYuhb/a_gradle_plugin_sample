@@ -1,6 +1,9 @@
 plugins {
     id 'com.android.application'
 }
+
+apply plugin: 'com.github.dcendents.android-maven'
+group = 'com.github.yuhaibing'
 apply plugin: 'com.example.plugintest'
 //apply plugin: 'com.yuhb.plugin'
 apply plugin: 'com.yuhb.upload'
@@ -10,6 +13,7 @@ versionInfo {
     versionCode = 1
     versionUpdateInfo = '当前是第一个版本：初始apk'
 }
+
 
 ReleaseInfo {
     versionCode = 1
