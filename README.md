@@ -1,0 +1,2 @@
+# a_gradle_plugin_sample
+demo中实现了一个简单的Gradle插件功能
