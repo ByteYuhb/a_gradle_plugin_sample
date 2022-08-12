@@ -8,8 +8,9 @@ buildscript {
         mavenCentral()
 
         maven {
-            url uri('D:/maven_local')
+            url 'file:///D:/maven_local'
         }
+
     }
     dependencies {
         classpath "com.android.tools.build:gradle:4.1.1"
@@ -32,7 +33,7 @@ allprojects {
         maven {url "https://maven.aliyun.com/repository/public/"}
         mavenCentral()
         maven {
-            url uri('D:/maven_local')
+             url 'file:///D:/maven_local'
         }
     }
     group 'cpm_group'
@@ -99,7 +100,7 @@ buildscript { ScriptHandler handler ->
     //配置工程插件依赖地址
     handler.dependencies { DependencyHandler dependencyHandler ->
         classpath "com.android.tools.build:gradle:4.1.1"
-        gradleApi()
+//        gradleApi()
     }
 }
 
