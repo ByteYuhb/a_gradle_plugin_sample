@@ -1,0 +1,38 @@
+plugins {
+    id 'groovy'
+    id 'java-gradle-plugin'
+    id 'maven'
+}
+dependencies {
+    implementation gradleApi()
+    implementation localGroovy()//groovy sdk
+}
+sourceSets {
+    main {
+        groovy {
+            srcDir 'src/main/groovy'
+        }
+        resources {
+            srcDir 'src/main/resources'
+        }
+    }
+}
+gradlePlugin {
+    plugins {
+        modularPlugin {
+            id = 'com.yuhb.plugin'
+            implementationClass = 'com.yuhb.plugin.HelloPlugin'
+        }
+    }
+}
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            repository(url:uri('D:/maven_local'))
+            pom.groupId = 'com.yuhb.plugin'
+            pom.artifactId = 'plugin'
+            pom.version = '1.0.2'
+        }
+    }
+}
+

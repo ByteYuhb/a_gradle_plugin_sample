@@ -1,0 +1,83 @@
+import groovy.xml.MarkupBuilder
+ext{
+    versionFile = file('releases.xml')
+    if (!versionFile.exists()) {
+        versionFile.createNewFile()
+    }
+}
+this.afterEvaluate { Project project ->
+    def buildTask = project.tasks.getByName('build')
+    buildTask.dependsOn('writeInfoTask')
+    buildTask.doLast {
+        println 'do last now'
+//        writeInfoTask.execute()
+    }
+}
+task writeInfoTask {
+    inputs.property('versionName',rootProject.ext.versionName)
+    inputs.property('versionCode',rootProject.ext.versionCode)
+    inputs.property('versionInfo',rootProject.ext.versionInfo)
+    outputs.file versionFile
+    doLast {
+        def versions = inputs.getProperties()
+        File file = outputs.getFiles().getSingleFile()
+        VersionManager versionMsg = new VersionManager(versions)
+        //将实体写入到xml文件中
+        StringWriter sw = new StringWriter()
+        def builder = new MarkupBuilder(sw)
+        if (file.text != null && file.text.size() <= 0) {
+            //没有版本内容
+            builder.releases{
+                release {
+                    versionCode(versionMsg.versionCode)
+                    versionName(versionMsg.versionName)
+                    versionInfo(versionMsg.versionInfo)
+                }
+            }
+            file.withWriter {
+                it.append(sw.toString())
+            }
+        }else {
+            //已有其它版本内容
+            builder.release {
+                versionCode(versionMsg.versionCode)
+                versionName(versionMsg.versionName)
+                versionInfo(versionMsg.versionInfo)
+            }
+            //插入到最后一行前面
+            def lines = file.readLines()
+            def lengths = lines.size() - 1
+            file.withWriter {
+                lines.eachWithIndex { String entry, int index ->
+                    if(index != lengths){
+                        file.append(entry+'\r\n')
+                    }else {
+                        file.append('\r\r\n' + sw.toString() + '\r\n')
+                        file.append(lines.get(lengths))
+                    }
+                }
+            }
+        }
+    }
+}
+
+class VersionManager {
+    def versionName
+    def versionCode
+    def versionInfo
+}
+
+task readInfoTask {
+    inputs.file versionFile
+    doLast {
+        File file = inputs.getFiles().getSingleFile()
+        println file.text
+    }
+}
+
+task taskZ {
+    dependsOn writeInfoTask, readInfoTask
+    doLast {
+        println '输入输出任务结束'
+    }
+}

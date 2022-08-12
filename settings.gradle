@@ -1,0 +1,12 @@
+
+rootProject.name = "appTest1"
+if(hasProperty('isLoadTest')?isLoadTest.toBoolean():false){
+    include ':app'
+}
+
+include ':gradle_source'
+include ':plugintest'
+include ':demo_plugin'
+include ':helloplugin'
+include ':upload_app_version'
+include ':uploadversion'

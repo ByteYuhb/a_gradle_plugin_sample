@@ -1,0 +1,60 @@
+apply plugin: 'groovy'
+apply plugin: 'maven'
+dependencies {
+    implementation gradleApi()//gradle sdk
+    implementation localGroovy()//groovy sdk
+    implementation 'com.android.tools.build:gradle:4.1.1'
+}
+sourceSets {
+    main {
+        groovy {
+            srcDir 'src/main/grovvy'
+        }
+        resources {
+            srcDir 'src/main/resources'
+        }
+    }
+}
+repositories {
+    mavenCentral()
+}
+
+group='com.example.plugintest'
+version='1.0.7'
+
+uploadArchives{
+    repositories {
+        mavenDeployer {
+            //提交到远程服务器：
+            // repository(url: "http://www.xxx.com/repos") {
+            //    authentication(userName: "admin", password: "admin")
+            // }
+            //提交到本地磁盘
+            repository(url: uri('D:/maven_local'))
+        }
+    }
+}
+this.gradle.beforeSettings {
+    println 'this is beforeSettings'
+}
+//this.gradle.
+this.gradle. projectsEvaluated{
+    println 'this is beforeSettings'
+}
+this.beforeEvaluate {
+    println 'this is beforeEvaluate'
+}
+this.afterEvaluate {
+    println 'this is afterEvaluate'
+}
+this.gradle.buildStarted {
+    println 'this is buildStarted'
+}
+this.gradle.buildFinished {
+    println 'this is buildFinished'
+}
+
+
+
+
+

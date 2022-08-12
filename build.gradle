@@ -1,0 +1,154 @@
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+apply from: file('common.gradle')
+
+buildscript {
+    repositories {
+        maven {url "https://maven.aliyun.com/repository/google/"}
+        maven {url "https://maven.aliyun.com/repository/public/"}
+        mavenCentral()
+        maven {
+            url uri('D:/maven_local')
+        }
+    }
+    dependencies {
+        classpath "com.android.tools.build:gradle:4.1.1"
+        classpath 'com.example.plugintest:plugintest:1.0.7'
+        classpath 'com.yuhb.upload:upload:1.0.1'
+        // NOTE: Do not place your application dependencies here; they belong
+        // in the individual module build.gradle files
+    }
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}
+//统一配置所有子project的集合
+allprojects {
+    repositories {
+        maven {url "https://maven.aliyun.com/repository/google/"}
+        maven {url "https://maven.aliyun.com/repository/public/"}
+        mavenCentral()
+        maven {
+            url uri('D:/maven_local')
+        }
+    }
+    group 'cpm_group'
+    version 1.0
+}
+//包括子Project
+subprojects {Project project ->
+    if(plugins.hasPlugin('com.android.library')){
+        apply from:'../publishMaven.gradle'
+    }
+}
+
+this.beforeEvaluate {
+//    println getUtf_8Str('配置阶段开始前...')
+}
+this.afterEvaluate {
+//    println getUtf_8Str('配置阶段结束后...')
+}
+this.gradle.buildFinished {
+//    println getUtf_8Str('任务执行阶段完成...')
+}
+
+//文件:路径api
+//println "this root file path:"+getRootDir().absolutePath
+//println "this buildDir path:"+getBuildDir().absolutePath
+//println "this ProjectDir path:"+getProjectDir().absolutePath
+
+//文件：file api
+println getFileContent('common.gradle')
+
+def getFileContent(String path){
+    try {
+        File file = file(path)
+        return file.text
+    }catch(GradleException e){
+        println 'file is not found'
+    }
+    return null
+}
+
+//文件拷贝
+copy {
+    from file('gradlew')
+    into getRootProject().getBuildDir().absolutePath
+    exclude {}
+    rename {}
+}
+//其他api
+
+buildscript { ScriptHandler handler ->
+    //配置工程仓库地址
+    handler.repositories { RepositoryHandler repositoryHandler ->
+        repositoryHandler.google()
+        repositoryHandler.mavenCentral()
+//        repositoryHandler.maven { MavenArtifactRepository mavenArtifactRepository ->
+//            mavenArtifactRepository.url '私服地址'
+//            mavenArtifactRepository.name '仓库名称'
+//            mavenArtifactRepository.credentials {PasswordCredentials passwordCredentials ->
+//                username 'yuhb'
+//                password 'admin123'
+//            }
+//        }
+    }
+    //配置工程插件依赖地址
+    handler.dependencies { DependencyHandler dependencyHandler ->
+        classpath "com.android.tools.build:gradle:4.1.1"
+        gradleApi()
+    }
+}
+
+
+
+
+//获取所有的Project
+this.getAllprojects()
+//获取子Project
+this.getSubprojects()
+//获取父Project
+this.getParent()
+//获取rootProject
+this.getRootProject()
+//通过project名称获取project可以在这里配置
+project('app') { Project project ->
+//    println project.name
+//    println project.group
+    apply plugin: 'com.android.application'
+//    group 'com.immoc'
+//    version '1.0'
+    dependencies {
+
+    }
+    android {
+
+    }
+}
+
+getProjects()
+
+def getProjects(){
+//    println '----------------'
+//    println '--------root project--------'
+//    println '----------------'
+    this.getAllprojects().eachWithIndex{ Project entry, int i ->
+//        if(i == 0){
+//            println "rootProject is $entry.name"
+//        }else{
+//            println "subProject $entry.name"
+//        }
+    }
+}
+
+
+
+
+
+
+def getGbkStr(String str){
+    return new String(str.getBytes(),'gbk')
+}
+def getUtf_8Str(String str){
+    return new String(str.getBytes(),'utf-8')
+}
