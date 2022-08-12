@@ -4,23 +4,23 @@ plugins {
 
 apply plugin: 'com.github.dcendents.android-maven'
 group = 'com.github.yuhaibing'
-apply plugin: 'com.example.plugintest'
-//apply plugin: 'com.yuhb.plugin'
-apply plugin: 'com.yuhb.upload'
+//apply plugin: 'com.example.plugintest'
+////apply plugin: 'com.yuhb.plugin'
+//apply plugin: 'com.yuhb.upload'
 
-versionInfo {
-    versionName = '1.0.0'
-    versionCode = 1
-    versionUpdateInfo = '当前是第一个版本：初始apk'
-}
-
-
-ReleaseInfo {
-    versionCode = 1
-    versionName = '1.0.0'
-    versionInfo = "12345566版本发布"
-    fileName = "releaseinfo.xml"
-}
+//versionInfo {
+//    versionName = '1.0.0'
+//    versionCode = 1
+//    versionUpdateInfo = '当前是第一个版本：初始apk'
+//}
+//
+//
+//ReleaseInfo {
+//    versionCode = 1
+//    versionName = '1.0.0'
+//    versionInfo = "12345566版本发布"
+//    fileName = "releaseinfo.xml"
+//}
 //HelloPluginExt {
 //    name = 'yuhaibing'
 //    age = '12'
